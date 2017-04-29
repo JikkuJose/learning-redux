@@ -6,6 +6,8 @@ import {createStore} from 'redux'
 
 const counterReducer = (state = {0: 0}, action) => {
   switch(action.type) {
+    case 'DELETE_ALL':
+      return {}
     case 'ADD_COUNTER':
       let randomId = Math.random().toString(36).substr(3, 5)
       return {...state, ...{[randomId]: 0}}
@@ -26,14 +28,18 @@ const store = createStore(counterReducer)
 
 const handleIncrementClick = (id) => () => { store.dispatch({type: 'INCREMENT', id}) }
 const handleDecrementClick = (id) => () => { store.dispatch({type: 'DECREMENT', id}) }
+const handleDeleteCounter = (id) => () => { store.dispatch({type: 'DELETE_COUNTER', id}) }
 
 const handleAddCounter = () => { store.dispatch({type: 'ADD_COUNTER'}) }
-const handleDeleteCounter = (id) => () => { store.dispatch({type: 'DELETE_COUNTER', id}) }
+const handleDeleteAll = () => { store.dispatch({type: 'DELETE_ALL'}) }
 
 const render = () => {
   ReactDOM.render(
     <div>
-      <ControlPanel onAddClick={handleAddCounter} />
+      <ControlPanel
+        onAddClick={handleAddCounter}
+        onDeleteAll={handleDeleteAll}
+      />
       <CounterList
         counters={store.getState()}
         onIncrementClick={handleIncrementClick}
