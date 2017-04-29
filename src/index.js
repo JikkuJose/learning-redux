@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Counter from './components/Counter.js'
+import CounterList from './components/CounterList.js'
+import ControlPanel from './components/ControlPanel.js'
 import {createStore} from 'redux'
 
-const counterReducer = (state = 9, action) => {
+const counterReducer = (state = {0: 0}, action) => {
   switch(action.type) {
+    case 'ADD_COUNTER':
+      let randomId = Math.random().toString(36).substr(3, 5)
+      return {...state, ...{[randomId]: 0}}
+    case 'DELETE_COUNTER':
+      let newState = {...state}
+      delete newState[action.id]
+      return newState
     case 'INCREMENT':
-      return state + 1
+      return {...state, ...{[action.id]: state[action.id] + 1 }}
     case 'DECREMENT':
-      return state - 1
+      return {...state, ...{[action.id]: state[action.id] - 1 }}
     default:
       return state
   }
@@ -16,16 +24,23 @@ const counterReducer = (state = 9, action) => {
 
 const store = createStore(counterReducer)
 
-const handleIncrementClick = () => { store.dispatch({type: 'INCREMENT'}) }
-const handleDecrementClick = () => { store.dispatch({type: 'DECREMENT'}) }
+const handleIncrementClick = (id) => () => { store.dispatch({type: 'INCREMENT', id}) }
+const handleDecrementClick = (id) => () => { store.dispatch({type: 'DECREMENT', id}) }
+
+const handleAddCounter = () => { store.dispatch({type: 'ADD_COUNTER'}) }
+const handleDeleteCounter = (id) => () => { store.dispatch({type: 'DELETE_COUNTER', id}) }
 
 const render = () => {
   ReactDOM.render(
-    <Counter
-      count={store.getState()}
-      increment={handleIncrementClick}
-      decrement={handleDecrementClick}
-    />,
+    <div>
+      <ControlPanel onAddClick={handleAddCounter} />
+      <CounterList
+        counters={store.getState()}
+        onIncrementClick={handleIncrementClick}
+        onDecrementClick={handleDecrementClick}
+        onDeleteClick={handleDeleteCounter}
+      />
+    </div> ,
     document.getElementById('root')
   );
 }

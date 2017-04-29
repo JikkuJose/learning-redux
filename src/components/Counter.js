@@ -17,6 +17,8 @@ const Container = styled.div`
   padding: 20px;
   background: #F5F5F5;
   font-family: monospace;
+  border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 5px;
 `
 
 export default class Counter extends React.Component {
@@ -28,6 +30,7 @@ export default class Counter extends React.Component {
         </Panel>
         <Button onClick={this.props.increment}>+</Button>
         <Button onClick={this.props.decrement}>-</Button>
+        <Button onClick={this.props.delete}>Delete</Button>
       </Container>
     );
   }
