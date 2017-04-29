@@ -18,7 +18,8 @@ export default class ControlPanel extends React.Component {
     return(
       <Container>
         <Button onClick={this.props.onAddClick}>Add Counter</Button>
-        <Button onClick={this.props.onDeleteAll}>Delete All</Button>
+        <Button onClick={this.props.onDeleteAllClick}>Delete All</Button>
+        <Button onClick={this.props.onAddToEachClick}>Add to Each</Button>
       </Container>
     );
   }

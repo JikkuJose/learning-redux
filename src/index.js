@@ -4,8 +4,15 @@ import CounterList from './components/CounterList.js'
 import ControlPanel from './components/ControlPanel.js'
 import {createStore} from 'redux'
 
-const counterReducer = (state = {0: 0}, action) => {
+const counterReducer = (state = {}, action) => {
   switch(action.type) {
+    case 'ADD_TO_EACH':
+      let addedToEach = Object.entries(state).reduce((acc, [id, count]) => {
+        acc[id] = count + 1
+        return acc
+      },{})
+      console.log(addedToEach)
+      return addedToEach
     case 'DELETE_ALL':
       return {}
     case 'ADD_COUNTER':
@@ -32,13 +39,15 @@ const handleDeleteCounter = (id) => () => { store.dispatch({type: 'DELETE_COUNTE
 
 const handleAddCounter = () => { store.dispatch({type: 'ADD_COUNTER'}) }
 const handleDeleteAll = () => { store.dispatch({type: 'DELETE_ALL'}) }
+const handleAddToEach = () => { store.dispatch({type: 'ADD_TO_EACH'}) }
 
 const render = () => {
   ReactDOM.render(
     <div>
       <ControlPanel
         onAddClick={handleAddCounter}
-        onDeleteAll={handleDeleteAll}
+        onDeleteAllClick={handleDeleteAll}
+        onAddToEachClick={handleAddToEach}
       />
       <CounterList
         counters={store.getState()}
