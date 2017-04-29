@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CounterList from './components/CounterList.js'
 import ControlPanel from './components/ControlPanel.js'
+import Article from './components/Article.js'
 import {createStore, combineReducers} from 'redux'
 
 const visibilityFilter = (state = 'SHOW_ALL', action) => {
@@ -98,6 +99,7 @@ const render = () => {
         onDecrementClick={handleDecrementClick}
         onDeleteClick={handleDeleteCounter}
       />
+      <Article />
     </div> ,
     document.getElementById('root')
   );
