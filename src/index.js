@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CounterList from './components/CounterList.js'
 import ControlPanel from './components/ControlPanel.js'
-import {createStore} from 'redux'
+import {createStore, combineReducers} from 'redux'
 
-const visibilityFilterReducer = (state = 'SHOW_ALL', action) => {
+const visibilityFilter = (state = 'SHOW_ALL', action) => {
   if(action.type === 'SET_VISIBILITY_FILTER') {
     return action.filter
   }
@@ -12,7 +12,7 @@ const visibilityFilterReducer = (state = 'SHOW_ALL', action) => {
   return state
 }
 
-const countersReducers = (state, action) => {
+const counters = (state = {}, action) => {
   switch(action.type) {
     case 'ADD_TO_EACH':
       let addedToEach = Object.entries(state).reduce((acc, [id, count]) => {
@@ -39,14 +39,9 @@ const countersReducers = (state, action) => {
   }
 }
 
-const counterAppReducer = (state = {counters: {}, visibilityFilter: 'SHOW_ALL'}, action) => {
-  return {
-    visibilityFilter: visibilityFilterReducer(state.visibilityFilter, action),
-    counters: countersReducers(state.counters, action)
-  }
-}
+const counterApp = combineReducers({counters, visibilityFilter})
 
-const store = createStore(counterAppReducer)
+const store = createStore(counterApp)
 
 const getVisible = () => {
   let { counters, visibilityFilter } = store.getState()
