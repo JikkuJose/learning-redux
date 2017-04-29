@@ -1,9 +1,10 @@
 import React from 'react';
+import Counter from './components/Counter.js'
 
 class App extends React.Component {
   render() {
     return (
-      null
+      <Counter count={3} />
     );
   }
 }
